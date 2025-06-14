@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SneakerX | Resell Sneakers</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #000;
+      color: #fff;
+    }
+
+    .hero {
+      background: linear-gradient(to right, #000, #222);
+      text-align: center;
+      padding: 3rem 1rem;
+      color: #ffd700;
+    }
+
+    .search-bar, .filters {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      padding: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .search-bar input, .filters select {
+      padding: 0.5rem;
+      border: 2px solid #ffd700;
+      border-radius: 10px;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    .tab-button {
+      padding: 0.7rem 1.5rem;
+      background: #222;
+      color: #ffd700;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+
+    .tab-button:hover,
+    .tab-button.active {
+      background: #ffd700;
+      color: #000;
+    }
+
+    .sneaker-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem;
+    }
+
+    .sneaker-card {
+      background: #fff;
+      color: #000;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .sneaker-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 25px rgba(255, 215, 0, 0.6);
+    }
+
+    .sneaker-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .sneaker-card .info {
+      padding: 1rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: #999;
+    }
+
+    .about, .how-it-works {
+      padding: 2rem;
+      background: #111;
+      color: #ffd700;
+      border-top: 2px solid #333;
+    }
+
+    .about h2, .how-it-works h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      padding: 1rem 0;
+    }
+
+    .step {
+      background: #222;
+      padding: 1rem;
+      border-radius: 10px;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div id="main" data-scroll-container>
+    <header class="hero" data-scroll-section>
+      <h1>SneakerX</h1>
+      <p>Buy | Sell | Compare | Bid Sneakers</p>
+    </header>
+
+    <section class="search-bar" data-scroll-section>
+      <input type="text" id="searchInput" placeholder="Search sneakers...">
+    </section>
+
+    <section class="filters" data-scroll-section>
+      <select id="brandFilter">
+        <option value="">All Brands</option>
+        <option value="Nike">Nike</option>
+        <option value="Adidas">Adidas</option>
+        <option value="Jordan">Jordan</option>
+        <option value="Puma">Puma</option>
+        <option value="New Balance">New Balance</option>
+      </select>
+      <select id="priceFilter">
+        <option value="">Sort by Price</option>
+        <option value="low">Low to High</option>
+        <option value="high">High to Low</option>
+      </select>
+    </section>
+
+    <nav class="tabs" data-scroll-section>
+      <button class="tab-button active" data-tab="buy">Buy</button>
+      <button class="tab-button" data-tab="sell">Sell</button>
+      <button class="tab-button" data-tab="compare">Compare</button>
+      <button class="tab-button" data-tab="bid">Bid</button>
+    </nav>
+
+    <section id="tab-content" data-scroll-section class="sneaker-grid"></section>
+
+    <section class="about" data-scroll-section>
+      <h2>About SneakerX</h2>
+      <p>SneakerX is the ultimate platform for sneakerheads. We provide an easy and secure way to buy, sell, bid, and compare sneaker prices from trusted resellers.</p>
+    </section>
+
+    <section class="how-it-works" data-scroll-section>
+      <h2>How It Works</h2>
+      <div class="steps">
+        <div class="step">
+          <h3>1. Search & Discover</h3>
+          <p>Find the latest and rarest sneakers available across the market.</p>
+        </div>
+        <div class="step">
+          <h3>2. Filter & Compare</h3>
+          <p>Use filters to find sneakers by brand and price, and compare listings instantly.</p>
+        </div>
+        <div class="step">
+          <h3>3. Place a Bid or Buy Now</h3>
+          <p>Bid competitively or purchase immediately with confidence.</p>
+        </div>
+        <div class="step">
+          <h3>4. Sell Your Kicks</h3>
+          <p>List your sneakers and reach thousands of potential buyers securely.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer data-scroll-section>
+      <p>&copy; 2025 SneakerX. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <script>
+    const tabContent = document.getElementById('tab-content');
+    const searchInput = document.getElementById('searchInput');
+    const brandFilter = document.getElementById('brandFilter');
+    const priceFilter = document.getElementById('priceFilter');
+    const tabButtons = document.querySelectorAll('.tab-button');
+
+    let sneakers = [
+      { id: 1, name: "Nike Air Max", brand: "Nike", price: 199, image: "https://images.unsplash.com/photo-1600181959237-34c0f81b528d" },
+      { id: 2, name: "Adidas Yeezy Boost", brand: "Adidas", price: 299, image: "https://images.unsplash.com/photo-1580711238963-0f6c2f7e4bcf" },
+      { id: 3, name: "Jordan Retro", brand: "Jordan", price: 250, image: "https://images.unsplash.com/photo-1606813902764-cf21b8e74b1b" },
+      { id: 4, name: "Puma RS-X", brand: "Puma", price: 180, image: "https://images.unsplash.com/photo-1606815480670-1ef4231cf0f9" },
+      { id: 5, name: "Nike Dunk Low", brand: "Nike", price: 220, image: "https://images.unsplash.com/photo-1612831455543-6a92f1dbe86a" },
+      { id: 6, name: "New Balance 550", brand: "New Balance", price: 210, image: "https://images.unsplash.com/photo-1653954161547-d3b417f5ea3a" },
+      { id: 7, name: "Nike Air Force 1", brand: "Nike", price: 190, image: "https://images.unsplash.com/photo-1585386959984-a4155224a1fc" },
+      { id: 8, name: "Adidas UltraBoost", brand: "Adidas", price: 240, image: "https://images.unsplash.com/photo-1579338559194-5e8f7e7a5848" },
+      { id: 9, name: "Jordan 1 High OG", brand: "Jordan", price: 275, image: "https://images.unsplash.com/photo-1600180758890-b1b6cc25b5d3" },
+      { id: 10, name: "Puma Suede Classic", brand: "Puma", price: 160, image: "https://images.unsplash.com/photo-1589187155473-10e4fcd07883" }
+    ];
+
+    function renderSneakers(filter = '') {
+      let filtered = sneakers.filter(s => s.name.toLowerCase().includes(filter.toLowerCase()));
+      const brand = brandFilter.value;
+      if (brand) filtered = filtered.filter(s => s.brand === brand);
+
+      const sort = priceFilter.value;
+      if (sort === 'low') filtered.sort((a, b) => a.price - b.price);
+      if (sort === 'high') filtered.sort((a, b) => b.price - a.price);
+
+      tabContent.innerHTML = filtered.map(s => `
+        <div class="sneaker-card" data-scroll>
+          <img src="${s.image}" alt="${s.name}" />
+          <div class="info">
+            <h3>${s.name}</h3>
+            <p>$${s.price}</p>
+            <button class="tab-button">Buy Now</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    searchInput.addEventListener('input', () => renderSneakers(searchInput.value));
+    brandFilter.addEventListener('change', () => renderSneakers(searchInput.value));
+    priceFilter.addEventListener('change', () => renderSneakers(searchInput.value));
+
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelector('.tab-button.active').classList.remove('active');
+        btn.classList.add('active');
+        renderSneakers(searchInput.value);
+      });
+    });
+
+    renderSneakers();
+
+    new LocomotiveScroll({
+      el: document.querySelector("#main"),
+      smooth: true
+    });
+  </script>
+</body>
+</html>
